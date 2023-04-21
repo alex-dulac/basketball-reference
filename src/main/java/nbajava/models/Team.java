@@ -2,25 +2,26 @@ package nbajava.models;
 
 public class Team {
 
-    public String teamId;
+    public String id;
     public String city;
-    public String nickname;
+    public String mascot;
     public String fullName;
-    public String tricode;
-    public String confName;
-    public String divName;
-    public String urlName;
+    public String headCoach; // TODO replace with Coach object
+    public String seasonYear; // TODO probably replace with a Season object
+    public String offensiveRating;
+    public String defensiveRating;
+    public String winLossPercentage;
+    public String topWinSharePlayer; // essentially the team's MVP. TODO replace with Player object
 
     public Team() {
-
     }
 
-    public String getUrlName() {
-        return urlName;
+    public String getId() {
+        return id;
     }
 
-    public void setUrlName(String urlName) {
-        this.urlName = urlName;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getCity() {
@@ -31,6 +32,14 @@ public class Team {
         this.city = city;
     }
 
+    public String getMascot() {
+        return mascot;
+    }
+
+    public void setMascot(String mascot) {
+        this.mascot = mascot;
+    }
+
     public String getFullName() {
         return fullName;
     }
@@ -39,43 +48,51 @@ public class Team {
         this.fullName = fullName;
     }
 
-    public String getTricode() {
-        return tricode;
+    public String getHeadCoach() {
+        return headCoach;
     }
 
-    public void setTricode(String tricode) {
-        this.tricode = tricode;
+    public void setHeadCoach(String headCoach) {
+        this.headCoach = headCoach;
     }
 
-    public String getTeamId() {
-        return teamId;
+    public String getSeasonYear() {
+        return seasonYear;
     }
 
-    public void setTeamId(String teamId) {
-        this.teamId = teamId;
+    public void setSeasonYear(String seasonYear) {
+        this.seasonYear = seasonYear;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getOffensiveRating() {
+        return offensiveRating;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setOffensiveRating(String offensiveRating) {
+        this.offensiveRating = offensiveRating;
     }
 
-    public String getConfName() {
-        return confName;
+    public String getDefensiveRating() {
+        return defensiveRating;
     }
 
-    public void setConfName(String confName) {
-        this.confName = confName;
+    public void setDefensiveRating(String defensiveRating) {
+        this.defensiveRating = defensiveRating;
     }
 
-    public String getDivName() {
-        return divName;
+    public String getWinLossPercentage() {
+        return winLossPercentage;
     }
 
-    public void setDivName(String divName) {
-        this.divName = divName;
+    public void setWinLossPercentage(String winLossPercentage) {
+        this.winLossPercentage = winLossPercentage;
+    }
+
+    public String getTopWinSharePlayer() {
+        return topWinSharePlayer;
+    }
+
+    public void setTopWinSharePlayer(String topWinSharePlayer) {
+        this.topWinSharePlayer = topWinSharePlayer;
     }
 }

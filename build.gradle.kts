@@ -16,6 +16,8 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
+	implementation("org.htmlunit:htmlunit:3.1.0")
 	implementation("org.jsoup:jsoup:1.15.4")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }

@@ -1,20 +1,20 @@
 package nbajava.services;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
+import nbajava.models.Team;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class DataService {
 
-    private static final String baseUrl = "https://www.basketball-reference.com/";
+    private final ScraperService scraperService;
 
-    public String getTeamName(String team) {
-        try {
-            Document document = Jsoup.connect(baseUrl).get();
-            return document.title();
-        } catch (Exception e) {
-            return "";
-        }
+    @Autowired
+    public DataService(ScraperService scraperService) {
+        this.scraperService = scraperService;
+    }
+
+    public Team getTeam(String city, String year) {
+        return this.scraperService.getTeam(city, year);
     }
 }
