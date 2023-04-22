@@ -5,11 +5,15 @@ import org.htmlunit.WebClient;
 import org.htmlunit.html.*;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class ScraperService {
 
     private static final String baseUrl = "https://www.basketball-reference.com/";
     private static final String teamsPage = "teams/";
+    private static final String leaguesPage = "leagues/";
 
     public Team getTeam(String city, String year) {
         final WebClient client = new WebClient();
@@ -18,36 +22,58 @@ public class ScraperService {
         final String url = baseUrl + teamsPage + city;
 
         try {
-            // would be great if all elements were ID'ed , but it's not that simple (probably intentionally)
             final HtmlPage teamPage = client.getPage(url);
-            final HtmlTable table = (HtmlTable) teamPage.getElementById(city); // convenient to use the city again
-
-
-            HtmlTableRow dataRow;
-            if (year.isEmpty()) {
-                dataRow = (HtmlTableRow) table.getBodies().get(0).getFirstChild(); // first row is the latest season by default
-            } else {
-                // TODO update
-                dataRow = (HtmlTableRow) table.getBodies().get(0).getFirstChild(); // first row is the latest season by default
-            }
+            final HtmlTable table = (HtmlTable) teamPage.getElementById(city); // convenient to use the city param again
+            final HtmlTableRow dataRow = (HtmlTableRow) table.getBodies().get(0).getFirstChild();
 
             // elements containing the intended data
-            final HtmlTableHeaderCell seasonCell = dataRow.getFirstByXPath("//th[@data-stat='season']");
-            // final String seasonYear = seasonCell.getElementsByTagName("<a>").get(0).getTextContent();
+            final HtmlTableHeaderCell seasonCell = (HtmlTableHeaderCell) dataRow.getElementsByAttribute("th", "data-stat", "season").get(0);
             final HtmlTableCell teamName = dataRow.getFirstByXPath("//td[@data-stat='team_name']");
             final HtmlTableCell winLossPercentage = dataRow.getFirstByXPath("//td[@data-stat='win_loss_pct']");
             final HtmlTableCell offensiveRating = dataRow.getFirstByXPath("//td[@data-stat='off_rtg']");
             final HtmlTableCell defensiveRating = dataRow.getFirstByXPath("//td[@data-stat='def_rtg']");
+            final HtmlTableCell coach = dataRow.getFirstByXPath("//td[@data-stat='coaches']");
+            final HtmlTableCell topWinSharePlayer = dataRow.getFirstByXPath("//td[@data-stat='top_ws']");
 
             // create the object
             Team teamObject = new Team();
             teamObject.setFullName(teamName.getTextContent());
             teamObject.setSeasonYear(seasonCell.getTextContent());
-            teamObject.setOffensiveRating(offensiveRating.getVisibleText());
-            teamObject.setDefensiveRating(defensiveRating.getVisibleText());
+            teamObject.setOffensiveRating(offensiveRating.getTextContent());
+            teamObject.setDefensiveRating(defensiveRating.getTextContent());
             teamObject.setWinLossPercentage(winLossPercentage.getTextContent());
-            return teamObject;
+            teamObject.setHeadCoach(coach.getTextContent());
+            teamObject.setTopWinSharePlayer(topWinSharePlayer.getTextContent());
 
+            return teamObject;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    public ArrayList<String> getSeasonYears() {
+        final WebClient client = new WebClient();
+        client.getOptions().setCssEnabled(false);
+        client.getOptions().setJavaScriptEnabled(false);
+        final String url = baseUrl + leaguesPage;
+
+        try {
+            final HtmlPage teamPage = client.getPage(url);
+            final HtmlTable table = (HtmlTable) teamPage.getElementById("stats");
+            final HtmlTableBody tableBody = table.getBodies().get(0);
+            final List<HtmlTableRow> rows = tableBody.getRows();
+
+            ArrayList<String> seasons = new ArrayList<>();
+            for (HtmlTableRow row : rows) {
+                List<HtmlTableCell> rowCells = row.getElementsByAttribute("th", "data-stat", "season");
+                if (!rowCells.isEmpty()) {
+                    final HtmlTableHeaderCell seasonCell = (HtmlTableHeaderCell) rowCells.get(0);
+                    seasons.add(seasonCell.getTextContent());
+                }
+            }
+
+            return seasons;
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return null;

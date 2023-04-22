@@ -10,14 +10,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+
 @RestController
 @RequestMapping("/nba")
-public class TeamController {
+public class NbaController {
 
     private final DataService dataService;
 
     @Autowired
-    public TeamController(DataService dataService) {
+    public NbaController(DataService dataService) {
         this.dataService = dataService;
     }
 
@@ -36,7 +38,27 @@ public class TeamController {
         try {
             return mapper.writeValueAsString(team);
         } catch (JsonProcessingException exception) {
-            return "Could not get team.";
+            System.out.println(exception.getMessage());
+            return "Could not process team object. Try again.";
+        }
+    }
+
+    /**
+     * curl -v http://localhost:8080/nba/seasonYears
+     * http://localhost:8080/nba/seasonYears
+     *
+     * Returns available seasons to analyze
+     */
+    @GetMapping("/seasonYears")
+    public String getSeasonYears() {
+        ArrayList<String> seasonYears = this.dataService.getSeasonYears();
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            return mapper.writeValueAsString(seasonYears);
+        } catch (JsonProcessingException exception) {
+            System.out.println(exception.getMessage());
+            return "Could not process season years. Try again.";
         }
     }
 }
