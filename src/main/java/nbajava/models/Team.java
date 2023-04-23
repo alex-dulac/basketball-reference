@@ -4,12 +4,12 @@ public class Team {
 
     public String id;
     public String city;
+    public String abbreviation;
     public String mascot;
     public String fullName;
     public String headCoach; // TODO replace with Coach object
-    public String seasonYear; // TODO probably replace with a Season object
-    public String offensiveRating;
-    public String defensiveRating;
+    public String seasonYear; // YYYY-XX TODO probably replace with a Season object
+    public String year; // YYYY
     public String winLossPercentage;
     public String topWinSharePlayer; // essentially the team's MVP. TODO replace with Player object
 
@@ -30,6 +30,14 @@ public class Team {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getAbbreviation() {
+        return abbreviation;
+    }
+
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation = abbreviation;
     }
 
     public String getMascot() {
@@ -64,20 +72,12 @@ public class Team {
         this.seasonYear = seasonYear;
     }
 
-    public String getOffensiveRating() {
-        return offensiveRating;
+    public String getYear() {
+        return year;
     }
 
-    public void setOffensiveRating(String offensiveRating) {
-        this.offensiveRating = offensiveRating;
-    }
-
-    public String getDefensiveRating() {
-        return defensiveRating;
-    }
-
-    public void setDefensiveRating(String defensiveRating) {
-        this.defensiveRating = defensiveRating;
+    public void setYear(String year) {
+        this.year = year;
     }
 
     public String getWinLossPercentage() {

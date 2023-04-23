@@ -3,6 +3,7 @@ package nbajava.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nbajava.models.Team;
+import nbajava.models.TeamStats;
 import nbajava.services.DataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,6 +60,28 @@ public class NbaController {
         } catch (JsonProcessingException exception) {
             System.out.println(exception.getMessage());
             return "Could not process season years. Try again.";
+        }
+    }
+
+    /**
+     * curl -v http://localhost:8080/nba/teamStats\?city\=BOS
+     * http://localhost:8080/nba/teamStats?city=BOS
+     *
+     * Returns a TeamStats object as a JSONstring
+     */
+    @GetMapping("/teamStats")
+    public String getTeamStats(
+            @RequestParam(value = "city", defaultValue = "") String city,
+            @RequestParam(value = "year", defaultValue = "") String year
+    ) {
+        TeamStats teamStats = this.dataService.getTeamStatsToCompareByTeam(city, year);
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            return mapper.writeValueAsString(teamStats);
+        } catch (JsonProcessingException exception) {
+            System.out.println(exception.getMessage());
+            return "Could not process team stats. Try again.";
         }
     }
 }
